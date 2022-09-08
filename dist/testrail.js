@@ -83,37 +83,8 @@ var TestRail = /** @class */ (function () {
         deasync.loopWhile(function () { return !done; });
         return result;
     };
-    TestRail.prototype.getCases = function (suiteId) {
-        var url = this.base + "/get_cases/" + this.options.projectId + "&suite_id=" + suiteId;
-        if (this.options.groupId) {
-            url += "&section_id=" + this.options.groupId;
-        }
-        if (this.options.filter) {
-            url += "&filter=" + this.options.filter;
-        }
-        if (this.options.typeId) {
-            url += "&type_id=" + this.options.typeId;
-        }
-        return this.makeSync(axios({
-            method: 'get',
-            url: url,
-            headers: { 'Content-Type': 'application/json' },
-            auth: {
-                username: this.options.username,
-                password: this.options.password
-            }
-        })
-            .then(function (response) {
-            return response.data.cases.map(function (item) { return item.id; });
-        })
-            .catch(function (error) { return console.error(error); }));
-    };
     TestRail.prototype.createRun = function (name, description, suiteId) {
         var _this = this;
-        if (this.options.includeAllInTestRun === false) {
-            this.includeAll = false;
-            this.caseIds = this.getCases(suiteId);
-        }
         this.makeSync(axios({
             method: 'post',
             url: this.base + "/add_run/" + this.options.projectId,

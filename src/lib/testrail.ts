@@ -34,39 +34,7 @@ export class TestRail {
     return result;
   }
 
-  public getCases (suiteId: number) {
-    let url = `${this.base}/get_cases/${this.options.projectId}&suite_id=${suiteId}`
-    if (this.options.groupId) {
-      url += `&section_id=${this.options.groupId}`
-    }
-    if (this.options.filter) {
-      url += `&filter=${this.options.filter}`
-    }
-    if (this.options.typeId) {
-      url += `&type_id=${this.options.typeId}`
-    }
-    return this.makeSync(
-      axios({
-        method:'get',
-        url: url,
-        headers: { 'Content-Type': 'application/json' }, 
-        auth: {
-            username: this.options.username,
-            password: this.options.password
-        } 
-      })
-      .then(response => {
-        return response.data.cases.map(item =>item.id)
-      })
-      .catch(error => console.error(error))
-    )
-  }
-
   public createRun (name: string, description: string, suiteId: number) {
-    if (this.options.includeAllInTestRun === false){
-      this.includeAll = false;
-      this.caseIds = this.getCases(suiteId);
-    }
     this.makeSync(
       axios({
         method: 'post',

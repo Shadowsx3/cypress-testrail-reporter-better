@@ -72,7 +72,6 @@ var TestRailValidation = /** @class */ (function () {
      */
     TestRailValidation.prototype.countTestSpecFiles = function () {
         // Read and store cli arguments into array
-        // Read and store cli arguments into array
         var cliArgs = process.argv.slice(2);
         /**
          * Count how many test files will be included in the run
@@ -88,6 +87,9 @@ var TestRailValidation = /** @class */ (function () {
                 result = value;
                 break;
             }
+        }
+        if (result === undefined) {
+            result = "cypress/integration/**/*,cypress/e2e/**/*,cypress/tests/**/*";
         }
         var specArg = result.split(/,/);
         specFilesArray = glob.sync(specArg, { nodir: true });
