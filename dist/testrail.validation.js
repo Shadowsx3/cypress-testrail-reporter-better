@@ -1,22 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TestRailValidation = void 0;
-var glob = require('glob');
-var TestRailLogger = require('./testrail.logger');
+var glob = require("glob");
+var TestRailLogger = require("./testrail.logger");
 var TestRailValidation = /** @class */ (function () {
     function TestRailValidation(options) {
         this.options = options;
     }
     TestRailValidation.prototype.validateReporterOptions = function (reporterOptions) {
         if (!reporterOptions) {
-            throw new Error('Missing reporterOptions in cypress.json');
+            throw new Error("Missing reporterOptions in cypress.json");
         }
-        this.validate(reporterOptions, 'host');
-        this.validate(reporterOptions, 'username');
-        this.validate(reporterOptions, 'password');
-        this.validate(reporterOptions, 'projectId');
+        this.validate(reporterOptions, "host");
+        this.validate(reporterOptions, "username");
+        this.validate(reporterOptions, "password");
+        this.validate(reporterOptions, "projectId");
         if (this.options.suiteId) {
-            this.validate(reporterOptions, 'suiteId');
+            this.validate(reporterOptions, "suiteId");
         }
         return reporterOptions;
     };
@@ -38,7 +38,7 @@ var TestRailValidation = /** @class */ (function () {
         var index, value, result;
         for (index = 0; index < cliArgs.length; ++index) {
             value = cliArgs[index];
-            if (value.includes('testRailSuiteId') === true) {
+            if (value.includes("testRailSuiteId") === true) {
                 result = value;
                 break;
             }
@@ -51,7 +51,7 @@ var TestRailValidation = /** @class */ (function () {
             var resultArrayArgs = result.split(/,/);
             for (index = 0; index < resultArrayArgs.length; ++index) {
                 value = resultArrayArgs[index];
-                if (value.includes('testRailSuiteId') === true) {
+                if (value.includes("testRailSuiteId") === true) {
                     result = value;
                     break;
                 }
@@ -72,13 +72,15 @@ var TestRailValidation = /** @class */ (function () {
      */
     TestRailValidation.prototype.countTestSpecFiles = function () {
         // Read and store cli arguments into array
+        // Read and store cli arguments into array
         var cliArgs = process.argv.slice(2);
         /**
          * Count how many test files will be included in the run
          * to be able to close test run after last one
          */
-        var index, value, result, directory;
-        var workingDirectory = [];
+        var pat = /\/([^\/]*?\*.*|[^\/]*$)/;
+        var index, value, result, directory, pattern;
+        var searchPattern = [];
         var specFiles = [];
         var specFilesArray = [];
         for (index = 0; index < cliArgs.length; ++index) {
@@ -93,17 +95,17 @@ var TestRailValidation = /** @class */ (function () {
         var specArg = result.split(/,/);
         for (index = 0; index < specArg.length; ++index) {
             value = specArg[index];
-            result = value.replace(/(?:[^\w])+/g, "/");
-            directory = result.replace(/\b(js|ts|feature)\b/, '');
-            workingDirectory.push(directory);
+            directory = value.replace(pat, "/");
+            pattern = value.match(pat)[1];
+            searchPattern.push([pattern, directory]);
         }
-        for (index = 0; index < workingDirectory.length; ++index) {
-            value = workingDirectory[index];
+        for (index = 0; index < searchPattern.length; ++index) {
+            value = searchPattern[index][1];
             var options = {
                 cwd: value,
-                nodir: true
+                nodir: true,
             };
-            result = glob.sync("**/*", options);
+            result = glob.sync(searchPattern[index][0], options);
             specFiles.push(result);
         }
         /**

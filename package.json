@@ -1,6 +1,6 @@
 {
   "name": "better-cypress-testrail-reporter",
-  "version": "1.3.5",
+  "version": "1.3.7",
   "description": "A Testrail reporter for cypress including TestRail API basic library",
   "main": "index.js",
   "private": false,
@@ -17,7 +17,7 @@
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Vivify-Ideas/cypress-testrail-reporter.git"
+    "url": "https://github.com/Shadowsx3/cypress-testrail-reporter-better.git"
   },
   "bugs": {
     "url": "https://github.com/Vivify-Ideas/cypress-testrail-reporter/issues"
