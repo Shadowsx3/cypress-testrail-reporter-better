@@ -93,7 +93,7 @@ var TestRailValidation = /** @class */ (function () {
         var specArg = result.split(/,/);
         for (index = 0; index < specArg.length; ++index) {
             value = specArg[index];
-            result = value.replace(/(?:\.(?![^.]+$)|[^\w])+/g, "/");
+            result = value.replace(/(?:[^\w])+/g, "/");
             directory = result.replace(/\b(js|ts|feature)\b/, '');
             workingDirectory.push(directory);
         }
@@ -103,7 +103,7 @@ var TestRailValidation = /** @class */ (function () {
                 cwd: value,
                 nodir: true
             };
-            result = glob.sync("*", options);
+            result = glob.sync("**/*", options);
             specFiles.push(result);
         }
         /**

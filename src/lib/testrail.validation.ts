@@ -100,7 +100,7 @@ export class TestRailValidation {
     const specArg = result.split(/,/);
     for (index = 0; index < specArg.length; ++index) {
       value = specArg[index];
-      result = value.replace(/(?:\.(?![^.]+$)|[^\w])+/g, "/");
+      result = value.replace(/(?:[^\w])+/g, "/");
       directory = result.replace(/\b(js|ts|feature)\b/, '');
       workingDirectory.push(directory);
     }
@@ -111,7 +111,7 @@ export class TestRailValidation {
         cwd: value,
         nodir: true
       }
-      result = glob.sync("*", options);
+      result = glob.sync("**/*", options);
       specFiles.push(result);
     }
     
