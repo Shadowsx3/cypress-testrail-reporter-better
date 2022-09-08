@@ -1,4 +1,4 @@
-# TestRail Reporter for Cypress
+# Better TestRail Reporter for Cypress
 
 Publishes [Cypress](https://www.cypress.io/) runs on TestRail. 
 
@@ -20,7 +20,7 @@ Core features:
 ## Install
 
 ```shell
-$ npm install cypress-testrail-reporter --save-dev
+$ npm install better-cypress-testrail-reporter --save-dev
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ Add reporter to your `cypress.json`:
 
 ```json
 ...
-"reporter": "cypress-testrail-reporter",
+"reporter": "better-cypress-testrail-reporter",
 "reporterOptions": {
   "host": "https://yourdomain.testrail.com",
   "username": "username",

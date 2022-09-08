@@ -79,8 +79,6 @@ var TestRailValidation = /** @class */ (function () {
          * to be able to close test run after last one
          */
         var index, value, result;
-        var searchPattern = [];
-        var specFiles = [];
         var specFilesArray = [];
         for (index = 0; index < cliArgs.length; ++index) {
             value = cliArgs[index];
