@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TestRailValidation = void 0;
-var glob = require("glob");
+var glob = require("glob-all");
 var TestRailLogger = require("./testrail.logger");
 var TestRailValidation = /** @class */ (function () {
     function TestRailValidation(options) {
@@ -78,8 +78,7 @@ var TestRailValidation = /** @class */ (function () {
          * Count how many test files will be included in the run
          * to be able to close test run after last one
          */
-        var pat = /\/([^\/]*?\*.*|[^\/]*$)/;
-        var index, value, result, directory, pattern;
+        var index, value, result;
         var searchPattern = [];
         var specFiles = [];
         var specFilesArray = [];
@@ -93,28 +92,7 @@ var TestRailValidation = /** @class */ (function () {
             }
         }
         var specArg = result.split(/,/);
-        for (index = 0; index < specArg.length; ++index) {
-            value = specArg[index];
-            directory = value.replace(pat, "/");
-            pattern = value.match(pat)[1];
-            searchPattern.push([pattern, directory]);
-        }
-        for (index = 0; index < searchPattern.length; ++index) {
-            value = searchPattern[index][1];
-            var options = {
-                cwd: value,
-                nodir: true,
-            };
-            result = glob.sync(searchPattern[index][0], options);
-            specFiles.push(result);
-        }
-        /**
-         * Since in previous steps we create 2D array,
-         * we need to covert it to 1D in order to get desired length
-         */
-        for (index = 0; index < specFiles.length; ++index) {
-            specFilesArray = specFilesArray.concat(specFiles[index]);
-        }
+        specFilesArray = glob.sync(specArg, { nodir: true });
         return specFilesArray;
     };
     return TestRailValidation;
